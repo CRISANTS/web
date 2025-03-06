@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad 11</title>
+    <style>
+       body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: black; /* Fondo negro */
+    color: black; /* Texto rojo */
+    text-align: center;
+}
+
+header {
+    background: black;
+    padding: 20px;
+    font-size: 24px;
+    color: black; /* Texto negro */
+    font-weight: bold;
+}
+
+main {
+    padding: 50px;
+}
+
+section {
+    background: rgba(255, 0, 0, 0.8); /* Rojo semi-transparente */
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 80%;
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5); /* Sombra roja */
+    color: black; /* Texto negro */
+}
+
+button {
+    background: black; /* Fondo negro */
+    color: red; /* Texto rojo */
+    padding: 10px 20px;
+    border: 2px solid red;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: red;
+    color: black;
+}
+
+footer {
+    background: red;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: black;
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+   
+   
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partes de una Computadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 20px;
+        }
+        .elementos {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            margin-right: 50px;
+        }
+        .draggable {
+            background-color: lightblue;
+            padding: 8px 12px;
+            cursor: grab;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 100px;
+            text-align: center;
+        }
+        .imagen-container {
+            position: relative;
+            display: inline-block;
+        }
+        .imagen-computadora {
+            width: 300px;
+        }
+        .dropzone {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid black;
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 12px;
+        }
+        #drop-monitor { top: 20px; left: 180px; }
+        #drop-teclado { top: 200px; left: 150px; }
+        #drop-mouse { top: 250px; left: 250px; }
+        #drop-cpu { top: 130px; left: 50px; }
+    </style>
+</head>
+<body>
+    <h1>Partes de una Computadora</h1>
+    <div class="contenedor">
+        <div class="elementos">
+            <div class="draggable" draggable="true" id="monitor">Monitor</div>
+            <div class="draggable" draggable="true" id="teclado">Teclado</div>
+            <div class="draggable" draggable="true" id="mouse">Mouse</div>
+            <div class="draggable" draggable="true" id="cpu">CPU</div>
+        </div>
+        <div class="imagen-container">
+            <img class="imagen-computadora" src="https://i.postimg.cc/J7Xg7r94/png-transparent-black-desktop-computer-set-illustration-desktop-computer-personal-computer-computer.png" alt="Partes de una computadora">
+            <div id="drop-monitor" class="dropzone"></div>
+            <div id="drop-teclado" class="dropzone"></div> 
+            <div id="drop-mouse" class="dropzone"></div>
+            <div id="drop-cpu" class="dropzone"></div>
+        </div>
+    </div>
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropzones = document.querySelectorAll('.dropzone');
+        draggables.forEach(item => {
+            item.addEventListener('dragstart', (event) => {
+                event.dataTransfer.setData('text', event.target.id);
+            });
+        });
+        dropzones.forEach(zone => {
+            zone.addEventListener('dragover', (event) => {
+                event.preventDefault();
+            });
+            zone.addEventListener('drop', (event) => {
+                event.preventDefault();
+                const draggedId = event.dataTransfer.getData('text');
+                const draggedElement = document.getElementById(draggedId);
+                if (zone.id === `drop-${draggedId}`) {
+                    zone.textContent = '';
+                    zone.appendChild(draggedElement);
+                    draggedElement.style.position = 'absolute';
+                    draggedElement.style.left = '0';
+                    draggedElement.style.top = '0';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dibujo en Canvas</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid black; cursor: crosshair; display: block; margin: 10px auto; }
+        .controls { margin: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Dibujo en Canvas</h2>
+    
+    <!-- Controles para dibujo libre -->
+    <div class="controls">
+        <label for="grosor">Grosor de línea:</label>
+        <input type="range" id="grosor" min="1" max="10" value="2">
+        
+        <label for="color">Color de línea:</label>
+        <input type="color" id="color" value="#000000">
+        
+        <button onclick="limpiarCanvas('canvasDibujo')">Limpiar</button>
+    </div>
+    
+    <!-- Lienzo para dibujo libre -->
+    <canvas id="canvasDibujo" width="400" height="500"></canvas>
+    
+    <h2>Cara Triste</h2>
+    <canvas id="canvasCara" width="400" height="400"></canvas>
+    
+    <script>
+        function limpiarCanvas(idCanvas) {
+            const canvas = document.getElementById(idCanvas);
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (idCanvas === "canvasCara") {
+                dibujarCaraTriste();
+            }
+        }
+
+        // Código para dibujo libre
+        const canvasDibujo = document.getElementById("canvasDibujo");
+        const ctxDibujo = canvasDibujo.getContext("2d");
+        let dibujando = false;
+        let grosor = document.getElementById("grosor");
+        let color = document.getElementById("color");
+
+        canvasDibujo.addEventListener("mousedown", () => { dibujando = true; });
+        canvasDibujo.addEventListener("mouseup", () => { dibujando = false; ctxDibujo.beginPath(); });
+        canvasDibujo.addEventListener("mousemove", dibujar);
+
+        function dibujar(event) {
+            if (!dibujando) return;
+            ctxDibujo.lineWidth = grosor.value;
+            ctxDibujo.strokeStyle = color.value;
+            ctxDibujo.lineCap = "round";
+            ctxDibujo.lineTo(event.offsetX, event.offsetY);
+            ctxDibujo.stroke();
+            ctxDibujo.beginPath();
+            ctxDibujo.moveTo(event.offsetX, event.offsetY);
+        }
+
+        // Código para la cara triste
+        const canvasCara = document.getElementById("canvasCara");
+        const ctxCara = canvasCara.getContext("2d");
+
+        function dibujarCaraTriste() {
+            ctxCara.clearRect(0, 0, canvasCara.width, canvasCara.height);
+            
+            // Dibujar cara
+            ctxCara.beginPath();
+            ctxCara.arc(200, 200, 100, 0, Math.PI * 2);
+            ctxCara.fillStyle = "yellow";
+            ctxCara.fill();
+            ctxCara.strokeStyle = "black";
+            ctxCara.lineWidth = 3;
+            ctxCara.stroke();
+            ctxCara.closePath();
+            
+            // Ojos
+            ctxCara.beginPath();
+            ctxCara.arc(170, 180, 10, 0, Math.PI * 2);
+            ctxCara.arc(230, 180, 10, 0, Math.PI * 2);
+            ctxCara.fillStyle = "black";
+            ctxCara.fill();
+            ctxCara.closePath();
+            
+            // Boca triste
+            ctxCara.beginPath();
+            ctxCara.arc(200, 230, 30, 0, Math.PI, true);
+            ctxCara.stroke();
+            ctxCara.closePath();
+        }
+        
+        dibujarCaraTriste();
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiderman de Canvas</title>
+</head>
+<body>
+    <h2 style="font-size: 16px; font-weight: bold; color: black;">Spiderman de Canvas</h2>
+    
+    <canvas id="miCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+
+    <script>
+        window.onload = function() {
+            var canvas = document.getElementById("miCanvas");
+            var ctx = canvas.getContext("2d");
+
+            var img = new Image();
+            img.crossOrigin = "anonymous"; // Evita problemas de CORS
+            img.src = "https://i.postimg.cc/Jzh3YK8H/dibujo-spiderman-paso11.jpg";
+
+            img.onload = function() {
+                ctx.drawImage(img, 50, 50, 300, 300); // Ajusta tamaño y posición
+            };
+        };
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico Editable</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Centrar el gráfico */
+.chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Asegurar tamaño fijo del gráfico */
+#chart-container {
+    width: 500px;
+    height: 500px;
+    position: relative;
+}
+
+#chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Centrar título */
+h2 {
+    text-align: center;
+    color: black; /* Texto rojo */
+}
+
+/* Centrar formulario */
+#formContainer {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Estilo para la leyenda */
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: black; /* Texto rojo */
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* Estilo para el botón */
+.update-btn {
+    display: block;
+    margin: 15px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: rgb(207, 50, 22); /* Fondo negro */
+    color: black; /* Texto rojo */
+    border: 2px solid rgb(207, 50, 22);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background-color:rgb(207, 50, 22)(155, 50, 50);
+    color: rgb(207, 50, 22);
+}
+
+/* Fondo general */
+body {
+    background-color: rgb(207, 50, 22); /* Fondo negro */
+    color: blacks; /* Texto rojo */
+    font-family: Arial, sans-serif;
+}
+
+    </style>
+</head>
+<body>
+    <h2>Gráfico de Dispositivos</h2>
+    <div class="chart-wrapper">
+        <div id="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Leyenda (Solo la de abajo) -->
+    <div class="chart-legend" id="chartLegend"></div>
+
+    <h3 style="text-align: center;">Editar Datos</h3>
+    <div id="formContainer"></div>
+    <button class="update-btn" onclick="updateChart()">Actualizar Gráfico</button>
+    
+    <script>
+        let data = [14.28, 14.28, 14.28, 14.28, 14.28, 14.28, 14.28];
+        let labels = ["Lista 1", "Lista 2", "Lista 3", "Lista 4", "Lista 5", "Lista 6", "Lista 7"];
+        let colors = ['blue', 'red', 'green', 'purple', 'orange', 'gray', 'yellow'];
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false // Oculta la leyenda superior
+                    }
+                }
+            }
+        });
+
+        function createForm() {
+            let formHTML = '';
+            labels.forEach((label, index) => {
+                formHTML += `<label style="color: ${colors[index]}; font-weight: bold;">
+                                ${label}: 
+                                <input type="text" id="label${index}" value="${label}" style="margin: 5px;">
+                                <input type="number" id="data${index}" value="${data[index]}" style="margin: 5px;">
+                            </label><br>`;
+            });
+            document.getElementById("formContainer").innerHTML = formHTML;
+            updateLegend();
+        }
+
+        function updateChart() {
+            labels = labels.map((_, index) => document.getElementById(`label${index}`).value);
+            data = data.map((_, index) => parseFloat(document.getElementById(`data${index}`).value) || 0);
+            
+            myChart.data.labels = labels;
+            myChart.data.datasets[0].data = data;
+            myChart.update();
+
+            updateLegend();
+        }
+
+        function updateLegend() {
+            let legendHTML = '';
+            labels.forEach((label, index) => {
+                legendHTML += `<div class="legend-item">
+                    <span class="legend-color" style="background-color: ${colors[index]};"></span>
+                    <span>${label}</span>
+                </div>`;
+            });
+            document.getElementById("chartLegend").innerHTML = legendHTML;
+        }
+
+        createForm();
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        #contenedor-origen, #contenedor-destino {
+            border: 2px solid black;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        .celda {
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            background-color: lightblue;
+            border: 1px solid blue;
+            cursor: grab;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 33%;
+            height: 50px;
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>Contenedor de origen:</h3>
+    <div id="contenedor-origen">
+        <div class="celda" draggable="true" id="celda11">Celda 11</div>
+        <div class="celda" draggable="true" id="celda12">Celda 12</div>
+        <div class="celda" draggable="true" id="celda13">Celda 13</div>
+        <div class="celda" draggable="true" id="celda21">Celda 21</div>
+        <div class="celda" draggable="true" id="celda22">Celda 22</div>
+        <div class="celda" draggable="true" id="celda23">Celda 23</div>
+        <div class="celda" draggable="true" id="celda31">Celda 31</div>
+        <div class="celda" draggable="true" id="celda32">Celda 32</div>
+        <div class="celda" draggable="true" id="celda33">Celda 33</div>
+    </div>
+
+    <h3>Contenedor de destino:</h3>
+    <table id="contenedor-destino">
+        <tr>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        </tr>
+        <tr>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        </tr>
+        <tr>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+            <td ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        </tr>
+    </table>
+
+    <button onclick="reset()">Reiniciar</button>
+
+    <script>
+        let draggedItem = null;
+
+        document.querySelectorAll('.celda').forEach(item => {
+            item.addEventListener('dragstart', (event) => {
+                draggedItem = event.target;
+            });
+        });
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            if (!event.target.innerHTML.trim()) {
+                event.target.appendChild(draggedItem);
+            }
+        }
+
+        function reset() {
+            let origen = document.getElementById('contenedor-origen');
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.firstChild) {
+                    origen.appendChild(cell.firstChild);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2 - Formulario con LocalStorage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .load-btn {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h3>Ejercicio 2</h3>
+        <p>Ingrese los datos y guárdelos localmente.</p>
+
+        <label>Nombre:</label>
+        <input type="text" id="nombre">
+
+        <label>Apellido:</label>
+        <input type="text" id="apellido">
+
+        <label>Email:</label>
+        <input type="email" id="email">
+
+        <label>Teléfono:</label>
+        <input type="tel" id="telefono">
+
+        <button class="save-btn" onclick="guardarDatos()">Actualizar datos</button>
+        <button class="load-btn" onclick="cargarDatos()">Cargar últimos datos</button>
+    </div>
+
+    <script>
+        function guardarDatos() {
+            let nombre = document.getElementById("nombre").value;
+            let apellido = document.getElementById("apellido").value;
+            let email = document.getElementById("email").value;
+            let telefono = document.getElementById("telefono").value;
+
+            if (nombre && apellido && email && telefono) {
+                let datos = {
+                    nombre: nombre,
+                    apellido: apellido,
+                    email: email,
+                    telefono: telefono
+                };
+
+                localStorage.setItem("formData", JSON.stringify(datos));
+                alert("Datos guardados correctamente.");
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        }
+
+        function cargarDatos() {
+            let datosGuardados = localStorage.getItem("formData");
+
+            if (datosGuardados) {
+                let datos = JSON.parse(datosGuardados);
+                document.getElementById("nombre").value = datos.nombre;
+                document.getElementById("apellido").value = datos.apellido;
+                document.getElementById("email").value = datos.email;
+                document.getElementById("telefono").value = datos.telefono;
+                alert("Datos cargados correctamente.");
+            } else {
+                alert("No hay datos guardados.");
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
